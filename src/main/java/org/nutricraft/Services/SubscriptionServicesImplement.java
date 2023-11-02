@@ -4,7 +4,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService
-public class SubscriptionServicesImplement {
+public class SubscriptionServicesImplement implements SubscriptionServices{
     @WebMethod
     public String newSubscription(){
         return "newSubs";

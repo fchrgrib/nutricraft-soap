@@ -2,14 +2,15 @@ package org.nutricraft.Services;
 
 import org.nutricraft.Database.Database;
 import org.nutricraft.Model.LogModel;
+import org.nutricraft.Model.Subscibers;
 
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.spi.http.HttpExchange;
 import javax.xml.ws.WebServiceContext;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService
 public class SubscriptionServicesImpl implements SubscriptionServices{
@@ -24,6 +25,7 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
             Statement statement = connection.createStatement();
             String query = "INSERT INTO subscribers (id_creator, id_user) VALUES ('" + idCreator + "', '" + idSubscriber + "')";
             statement.executeUpdate(query);
+            return "Successfully inserted new subscription";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +49,8 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
     }
 
     @WebMethod
-    public String getSubscribers(String idCreator){
+    public List<Integer> getSubscribers(String idCreator){
+        List<Integer> listSubscribers = new ArrayList<Integer>();
         try {
             Database db = new Database();
             Connection connection = db.getConn();
@@ -57,15 +60,17 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
             while (result.next()) {
                 int id = result.getInt("id_user");
                 System.out.println("id: " + id);
+                listSubscribers.add(id);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "getSubs";
+        return listSubscribers;
     }
 
     @WebMethod
-    public String getCreators(int idSubscriber){
+    public List<String> getCreators(int idSubscriber){
+        List<String> listCreators = new ArrayList<String>();
         try {
             Database db = new Database();
             Connection connection = db.getConn();
@@ -75,59 +80,66 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
             while (result.next()) {
                 String id = result.getString("id_creator");
                 System.out.println("id: " + id);
+                listCreators.add(id);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "getCreators";
+        return listCreators;
     }
 
     @WebMethod
-    public String getAllSubscription() {
+    public List<Subscibers> getAllSubscription() {
+        List<Subscibers> listSubscribers = new ArrayList<Subscibers>();
         try {
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM subscribers";
             ResultSet result = statement.executeQuery(query);
+
             while (result.next()) {
                 int id = result.getInt("id");
                 String idCreator = result.getString("id_creator");
-                int idSubscriber = result.getInt("id_users");
-                System.out.println("id: " + id + " id_creator: " + idCreator + " id_user: " + idSubscriber);
+                int idSubscriber = result.getInt("id_user");
+                listSubscribers.add(new Subscibers(id,idCreator,idSubscriber));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return "tea";
-    }
-
-    public Boolean validateApiKey() {
-        String[] API_KEYS = { "PremiumApp", "Postman", "RestClient", "RegularApp" };
-        MessageContext mc = wsContext.getMessageContext();
-        HttpExchange exchange = (HttpExchange) mc.get("com.sun.xml.ws.http.exchange");
-        String apiKey = exchange.getRequestHeaders().getFirst("X-API-KEY");
-        if (apiKey == null) {
-            return false;
-        } else if (apiKey.equals(API_KEYS[0]) || apiKey.equals(API_KEYS[1]) || apiKey.equals(API_KEYS[2])
-                || apiKey.equals(API_KEYS[3])) {
-            return true;
-        } else {
-            return false;
+        System.out.println("==================");
+        for(Subscibers sub : listSubscribers){
+            System.out.println("id: " + sub.getId() + " id_creator: " + sub.getId_creator() + " id_user: " + sub.getId_user());
         }
+        return listSubscribers;
     }
 
-    public void log(String description) {
-        MessageContext msgContext = wsContext.getMessageContext();
-        HttpExchange httpExchange = (HttpExchange) msgContext.get("com.sun.xml.ws.http.exchange");
-        String ip = httpExchange.getRemoteAddress().getAddress().getHostAddress();
-        String endpoint = httpExchange.getRequestURI().toString();
-        LogModel logModel = new LogModel();
-        String apiKey = httpExchange.getRequestHeaders().getFirst("X-API-KEY");
-        String desc = apiKey + ": " + description;
-        logModel.InsertLog(desc, endpoint, ip);
-    }
+//    public Boolean validateApiKey() {
+//        String[] API_KEYS = { "PremiumApp", "Postman", "RestClient", "RegularApp" };
+//        MessageContext mc = wsContext.getMessageContext();
+//        HttpExchange exchange = (HttpExchange) mc.get("com.sun.xml.ws.http.exchange");
+//        String apiKey = exchange.getRequestHeaders().getFirst("X-API-KEY");
+//        if (apiKey == null) {
+//            return false;
+//        } else if (apiKey.equals(API_KEYS[0]) || apiKey.equals(API_KEYS[1]) || apiKey.equals(API_KEYS[2])
+//                || apiKey.equals(API_KEYS[3])) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public void log(String description) {
+//        MessageContext msgContext = wsContext.getMessageContext();
+//        HttpExchange httpExchange = (HttpExchange) msgContext.get("com.sun.xml.ws.http.exchange");
+//        String ip = httpExchange.getRemoteAddress().getAddress().getHostAddress();
+//        String endpoint = httpExchange.getRequestURI().toString();
+//        LogModel logModel = new LogModel();
+//        String apiKey = httpExchange.getRequestHeaders().getFirst("X-API-KEY");
+//        String desc = apiKey + ": " + description;
+//        logModel.InsertLog(desc, endpoint, ip);
+//    }
 }
 
 // Database db = new Database();

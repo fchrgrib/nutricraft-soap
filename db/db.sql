@@ -33,6 +33,18 @@ CREATE TABLE `coins` (
 -- Dumping data for table `coins`
 --
 
+INSERT INTO `coins` (`id`, `coin`) VALUES
+  ('4169868951', 10),
+  ('6621876564', 45),
+  ('0068131062', 54),
+  ('2534892940', 5345),
+  ('2542003092', 645),
+  ('2076048790', 6564),
+  ('7833528552', 8),
+  ('5858179630', 4),
+  ('7807240504', 23),
+  ('7589780480', 1);
+
 LOCK TABLES `coins` WRITE;
 /*!40000 ALTER TABLE `coins` DISABLE KEYS */;
 /*!40000 ALTER TABLE `coins` ENABLE KEYS */;

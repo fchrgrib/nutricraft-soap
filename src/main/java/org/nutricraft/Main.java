@@ -1,7 +1,7 @@
 package org.nutricraft;
 
 import org.nutricraft.Database.Database;
-//import org.nutricraft.Services.CoinServicesImpl;
+import org.nutricraft.Services.CoinServicesImpl;
 import org.nutricraft.Services.SubscriptionServicesImpl;
 //import java.lang.reflect.Field;
 import javax.xml.ws.Endpoint;
@@ -16,7 +16,7 @@ public class Main {
             Endpoint.publish("http://nutricraft-soap:8081/ws/subscription", new SubscriptionServicesImpl());
 //            Endpoint.publish("http://nutricraft-soap:8081/ws/userLevels", new SubscriptionServicesImpl());
 //            Endpoint.publish("http://nutricraft-soap:8081/ws/creatorLevels", new SubscriptionServicesImpl());
-//            Endpoint.publish("http://nutricraft-soap:8081/ws/coins", new CoinServicesImpl());
+            Endpoint.publish("http://nutricraft-soap:8081/ws/coins", new CoinServicesImpl());
 //            Thread.sleep(10000);
 //            Database db = new Database();
 //            Connection connection = db.getConn();

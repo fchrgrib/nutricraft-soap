@@ -10,10 +10,10 @@ public class LogModel extends Database {
         super();
     }
 
-    public String InsertLog(String desc, String endpoint, String ip) {
+    public String InsertLog(String desc, String endpoint, String ip, String requested_at) {
         try {
             Statement statement = this.connection.createStatement();
-            String query = "INSERT INTO logging (description, endpoint, ip) VALUES ('" + desc + "', '" + endpoint + "', '" + ip + "')";
+            String query = "INSERT INTO logging (description, endpoint, IP, requested_at) VALUES ('" + desc + "', '" + endpoint + "', '" + ip + "','" + requested_at +"')";
             statement.executeUpdate(query);
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,7 +14,7 @@ public interface LevelUserServices {
     public List<UserLevels> getAllLevel();
 
     @WebMethod
-    public int getExp(int id);
+    public Integer getExp(int id);
 
     @WebMethod
     public String addExp(int id, int exp);

@@ -8,23 +8,32 @@ import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.spi.http.HttpExchange;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 @WebService (endpointInterface = "org.nutricraft.Services.SubscriptionServices")
 public class SubscriptionServicesImpl implements SubscriptionServices{
 
     @Resource
-    public WebServiceContext wsContext;
+    private WebServiceContext wsContext;
     @WebMethod
     public String newSubscription(String idCreator, int idSubscriber){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
         try {
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
             String query = "INSERT INTO subscribers (id_creator, id_user) VALUES ('" + idCreator + "', '" + idSubscriber + "')";
             statement.executeUpdate(query);
+            log("New Subscription");
             return "Successfully inserted new subscription";
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,6 +42,10 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
     }
     @WebMethod
     public Boolean checkSubscription(String idCreator, int idSubscriber){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
         try {
             Database db = new Database();
             Connection connection = db.getConn();
@@ -40,6 +53,7 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
             String query = "SELECT * FROM subscribers WHERE id_creator = '" + idCreator + "' AND id_user = '" + idSubscriber + "'";
             ResultSet result = statement.executeQuery(query);
             if (result.next()) {
+                log("Check Subscription");
                 return true;
             }
         }catch (Exception e){
@@ -50,6 +64,10 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
 
     @WebMethod
     public List<Integer> getSubscribers(String idCreator){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
         List<Integer> listSubscribers = new ArrayList<Integer>();
         try {
             Database db = new Database();
@@ -62,6 +80,7 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
                 System.out.println("id: " + id);
                 listSubscribers.add(id);
             }
+            log("Get Subscribers");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -70,6 +89,10 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
 
     @WebMethod
     public List<String> getCreators(int idSubscriber){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
         List<String> listCreators = new ArrayList<String>();
         try {
             Database db = new Database();
@@ -82,6 +105,7 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
                 System.out.println("id: " + id);
                 listCreators.add(id);
             }
+            log("Get Creators");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -90,7 +114,12 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
 
     @WebMethod
     public List<Subscibers> getAllSubscription() {
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
         List<Subscibers> listSubscribers = new ArrayList<Subscibers>();
+
         try {
             Database db = new Database();
             Connection connection = db.getConn();
@@ -104,6 +133,7 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
                 int idSubscriber = result.getInt("id_user");
                 listSubscribers.add(new Subscibers(id,idCreator,idSubscriber));
             }
+            log("Get All Subscription");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,32 +144,36 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
         }
         return listSubscribers;
     }
-
-//    public Boolean validateApiKey() {
-//        String[] API_KEYS = { "PremiumApp", "Postman", "RestClient", "RegularApp" };
-//        MessageContext mc = wsContext.getMessageContext();
-//        HttpExchange exchange = (HttpExchange) mc.get("com.sun.xml.ws.http.exchange");
-//        String apiKey = exchange.getRequestHeaders().getFirst("X-API-KEY");
-//        if (apiKey == null) {
-//            return false;
-//        } else if (apiKey.equals(API_KEYS[0]) || apiKey.equals(API_KEYS[1]) || apiKey.equals(API_KEYS[2])
-//                || apiKey.equals(API_KEYS[3])) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    public Boolean validateApiKey() {
+        MessageContext messageContext = wsContext.getMessageContext();
+        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
+        System.out.println("messageContext: " + queryString);
+        String[] keyValue = queryString.split("=");
+        if(keyValue.length==0 || !keyValue[0].equals("APIkey")){
+            return false;
+        }
+        String apiKey = keyValue[1];
+        System.out.println("API KEY: " + apiKey);
+        if(apiKey.equals("lalala")||apiKey.equals("hahaha")){
+            return true;
+        }else{
+            return false;
+        }
+    }
 //
-//    public void log(String description) {
-//        MessageContext msgContext = wsContext.getMessageContext();
-//        HttpExchange httpExchange = (HttpExchange) msgContext.get("com.sun.xml.ws.http.exchange");
-//        String ip = httpExchange.getRemoteAddress().getAddress().getHostAddress();
-//        String endpoint = httpExchange.getRequestURI().toString();
-//        LogModel logModel = new LogModel();
-//        String apiKey = httpExchange.getRequestHeaders().getFirst("X-API-KEY");
-//        String desc = apiKey + ": " + description;
-//        logModel.InsertLog(desc, endpoint, ip);
-//    }
+    public void log(String description) {
+        MessageContext messageContext = wsContext.getMessageContext();
+        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
+        System.out.println("messageContext: " + queryString);
+        String[] keyValue = queryString.split("=");
+        String apiKey = keyValue[1];
+        System.out.println("API KEY: " + apiKey);
+        String ip = "123";
+        String endpoint = (String) messageContext.get("javax.xml.ws.service.endpoint.address");
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        LogModel logModel = new LogModel();
+        logModel.InsertLog(description, endpoint, ip, timestamp.toString());
+    }
 }
 
 // Database db = new Database();

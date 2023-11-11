@@ -12,7 +12,7 @@ public interface LevelCreatorServices {
     public List<CreatorLevels> getAllLevels();
 
     @WebMethod
-    public int getExp(String id);
+    public Integer getExp(String id);
 
     @WebMethod
     public String addExp(String id, int exp);

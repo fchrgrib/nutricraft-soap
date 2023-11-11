@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebService
+@WebService (endpointInterface = "org.nutricraft.Services.SubscriptionServices")
 public class SubscriptionServicesImpl implements SubscriptionServices{
 
     @Resource

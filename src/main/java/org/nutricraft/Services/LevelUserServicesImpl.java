@@ -1,9 +1,8 @@
 package org.nutricraft.Services;
 
 import org.nutricraft.Database.Database;
-import org.nutricraft.Model.Coins;
+import org.nutricraft.Model.UserLevels;
 
-import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,94 +10,88 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebService(endpointInterface = "org.nutricraft.Services.CoinServices")
-public class CoinServicesImpl implements CoinServices{
 
-    @WebMethod
-    public List<Coins> getAllCoins() {
-        List<Coins> coins = new ArrayList<Coins>();
+@WebService(endpointInterface = "org.nutricraft.Services.LevelUserServices")
+public class LevelUserServicesImpl implements LevelUserServices {
+
+    @Override
+    public List<UserLevels> getAllLevel() {
+        List<UserLevels> user = new ArrayList<UserLevels>();
         try{
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM coins";
+            String query = "SELECT * FROM userlevels";
             ResultSet result = statement.executeQuery(query);
-            while (result.next()) {
-                coins.add(new Coins(result.getString("id"), result.getInt("coin")));
+            while (result.next()){
+                user.add(new UserLevels(result.getInt("id"),result.getInt("exp")));
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        for (Coins coin : coins) {
-            System.out.print(coin.getId()+" ");
-            System.out.println(coin.getCoins());
-        }
-
-        return coins;
+        return user;
     }
 
-    @WebMethod
-    public Integer getCoins(String id) {
-        int coin=0;
+    @Override
+    public int getExp(int id) {
+        int exp=0;
         try {
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
-            String query = "SELECT coin FROM coins JOIN subscribers ON coins.id = subscribers.id_creator WHERE coins.id = '" + id + "'";
+            String query = "SELECT exp FROM userlevels WHERE id = '" + id + "'";
             ResultSet result = statement.executeQuery(query);
             if(result.next()){
-                coin = result.getInt("coin");
+                exp = result.getInt("exp");
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return coin;
+        return exp;
     }
 
-    @WebMethod
-    public String addCoins(String id, int coins) {
+    @Override
+    public String addExp(int id, int exp) {
         try{
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
-            String query = "UPDATE coins SET coin = coin + " + coins + " WHERE id = '" + id + "'";
+            String query = "UPDATE userlevels SET exp = exp + " + exp + " WHERE id = '" + id + "'";
             statement.executeUpdate(query);
-            return "Successfully added coins";
+            return "Successfully added exp";
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "Failed to add coins";
+        return "Failed to add exp";
     }
 
-    @WebMethod
-    public String substractCoins(String id, int coins) {
+    @Override
+    public String substractExp(int id, int exp) {
         try{
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
-            String query = "UPDATE coins SET coin = coin - " + coins + " WHERE id = '" + id + "'";
+            String query = "UPDATE userlevels SET exp = exp - " + exp + " WHERE id = '" + id + "'";
             statement.executeUpdate(query);
-            return "Successfully removed coins";
+            return "Successfully substract exo";
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "Failed to remove coins";
+        return "Failed to subsctract exp";
     }
 
-    @WebMethod
-    public String deleteCoins(String id) {
+    @Override
+    public String deleteExp(int id) {
         try{
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
-            String query = "DELETE FROM coins WHERE id = '" + id + "'";
+            String query = "DELETE FROM userlevels WHERE id = '" + id + "'";
             statement.executeUpdate(query);
-            return "Successfully deleted coins";
+            return "Successfully deleted userlevels";
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "Failed to delete coins";
+        return "Failed to delete userlevels";
     }
-
-
 }

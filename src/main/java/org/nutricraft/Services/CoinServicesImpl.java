@@ -15,6 +15,26 @@ import java.util.List;
 public class CoinServicesImpl extends Services implements CoinServices{
 
     @WebMethod
+    public String newCoins(String id){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
+        try{
+            Database db = new Database();
+            Connection connection = db.getConn();
+            Statement statement = connection.createStatement();
+            String query = "INSERT INTO coins (id, coin) VALUES ('" + id + "', 0)";
+            statement.executeUpdate(query);
+            log("New Coins");
+            return "Successfully created new coins";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "Failed to create new coins";
+    }
+
+    @WebMethod
     public List<Coins> getAllCoins() {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");

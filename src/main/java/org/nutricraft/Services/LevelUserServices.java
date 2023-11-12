@@ -11,17 +11,20 @@ import java.util.List;
 public interface LevelUserServices {
 
     @WebMethod
-    public List<UserLevels> getAllLevel();
+    public String newUser(int id);
 
     @WebMethod
-    public Integer getExp(int id);
+    public List<UserLevels> getAllLevelUser();
 
     @WebMethod
-    public String addExp(int id, int exp);
+    public Integer getExpUser(int id);
 
     @WebMethod
-    public String substractExp(int id, int exp);
+    public String addExpUser(int id, int exp);
 
     @WebMethod
-    public String deleteExp(int id);
+    public String substractExpUser(int id, int exp);
+
+    @WebMethod
+    public String deleteExpUser(int id);
 }

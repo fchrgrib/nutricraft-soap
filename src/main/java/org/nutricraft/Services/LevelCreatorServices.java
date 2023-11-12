@@ -8,18 +8,22 @@ import javax.jws.WebService;
 import java.util.List;
 @WebService
 public interface LevelCreatorServices {
-    @WebMethod
-    public List<CreatorLevels> getAllLevels();
 
     @WebMethod
-    public Integer getExp(String id);
+    public String newCreator(String id);
 
     @WebMethod
-    public String addExp(String id, int exp);
+    public List<CreatorLevels> getAllLevelCreator();
 
     @WebMethod
-    public String substractExp(String id, int exp);
+    public Integer getExpCreator(String id);
 
     @WebMethod
-    public String deleteExp(String id);
+    public String addExpCreator(String id, int exp);
+
+    @WebMethod
+    public String substractExpCreator(String id, int exp);
+
+    @WebMethod
+    public String deleteExpCreator(String id);
 }

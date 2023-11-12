@@ -11,6 +11,9 @@ import java.util.List;
 public interface CoinServices {
 
     @WebMethod
+    public String newCoins(String id);
+
+    @WebMethod
     public List<Coins> getAllCoins();
 
     @WebMethod

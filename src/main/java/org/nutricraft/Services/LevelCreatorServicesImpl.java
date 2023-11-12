@@ -16,7 +16,27 @@ import java.util.List;
 public class LevelCreatorServicesImpl extends Services implements LevelCreatorServices{
 
     @WebMethod
-    public List<CreatorLevels> getAllLevels(){
+    public String newCreator(String id){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
+        try{
+            Database db = new Database();
+            Connection connection = db.getConn();
+            Statement statement = connection.createStatement();
+            String query = "INSERT INTO creatorlevels (id, exp) VALUES ('" + id + "', 0)";
+            statement.executeUpdate(query);
+            log("New Creator");
+            return "Successfully created new creator";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "Failed to create new creator";
+    }
+
+    @WebMethod
+    public List<CreatorLevels> getAllLevelCreator(){
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -39,7 +59,7 @@ public class LevelCreatorServicesImpl extends Services implements LevelCreatorSe
     }
 
     @WebMethod
-    public Integer getExp(String id){
+    public Integer getExpCreator(String id){
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -62,7 +82,7 @@ public class LevelCreatorServicesImpl extends Services implements LevelCreatorSe
     }
 
     @WebMethod
-    public String addExp(String id, int exp){
+    public String addExpCreator(String id, int exp){
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -74,7 +94,7 @@ public class LevelCreatorServicesImpl extends Services implements LevelCreatorSe
             String query = "UPDATE creatorlevels SET exp = exp + " + exp + " WHERE id = '" + id + "'";
             statement.executeUpdate(query);
             log("Add Exp");
-            return "Successfully added exp creator";
+            return "Successfully add exp creator";
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -82,7 +102,7 @@ public class LevelCreatorServicesImpl extends Services implements LevelCreatorSe
     }
 
     @WebMethod
-    public String substractExp(String id, int exp){
+    public String substractExpCreator(String id, int exp){
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -94,15 +114,15 @@ public class LevelCreatorServicesImpl extends Services implements LevelCreatorSe
             String query = "UPDATE creatorlevels SET exp = exp - " + exp + " WHERE id = '" + id + "'";
             statement.executeUpdate(query);
             log("Substract Exp");
-            return "Successfully substract exo creator";
+            return "Successfully substract exp creator";
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "Failed to subsctract exp creator";
+        return "Failed to substract exp creator";
     }
 
     @WebMethod
-    public String deleteExp(String id){
+    public String deleteExpCreator(String id){
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -114,12 +134,11 @@ public class LevelCreatorServicesImpl extends Services implements LevelCreatorSe
             String query = "DELETE FROM creatorlevels WHERE id = '" + id + "'";
             statement.executeUpdate(query);
             log("Delete Exp");
-            return "Successfully deleted creatorlevels ";
+            return "Successfully delete exp creator";
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "Failed to delete creatorlevels";
+        return "Failed to delete exp creator";
     }
-
 
 }

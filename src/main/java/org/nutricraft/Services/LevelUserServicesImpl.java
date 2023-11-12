@@ -17,7 +17,27 @@ import java.util.List;
 public class LevelUserServicesImpl extends Services implements LevelUserServices {
 
     @WebMethod
-    public List<UserLevels> getAllLevel() {
+    public String newUser(int id){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
+        try{
+            Database db = new Database();
+            Connection connection = db.getConn();
+            Statement statement = connection.createStatement();
+            String query = "INSERT INTO userlevels (id, exp) VALUES ('" + id + "', 0)";
+            statement.executeUpdate(query);
+            log("New User");
+            return "Successfully created new user";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "Failed to create new user";
+    }
+
+    @WebMethod
+    public List<UserLevels> getAllLevelUser() {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -40,7 +60,7 @@ public class LevelUserServicesImpl extends Services implements LevelUserServices
     }
 
     @WebMethod
-    public Integer getExp(int id) {
+    public Integer getExpUser(int id) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -63,7 +83,7 @@ public class LevelUserServicesImpl extends Services implements LevelUserServices
     }
 
     @WebMethod
-    public String addExp(int id, int exp) {
+    public String addExpUser(int id, int exp) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -83,7 +103,7 @@ public class LevelUserServicesImpl extends Services implements LevelUserServices
     }
 
     @WebMethod
-    public String substractExp(int id, int exp) {
+    public String substractExpUser(int id, int exp) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;
@@ -103,7 +123,7 @@ public class LevelUserServicesImpl extends Services implements LevelUserServices
     }
 
     @WebMethod
-    public String deleteExp(int id) {
+    public String deleteExpUser(int id) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
             return null;

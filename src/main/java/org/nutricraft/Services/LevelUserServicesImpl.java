@@ -1,28 +1,22 @@
 package org.nutricraft.Services;
 
 import org.nutricraft.Database.Database;
-import org.nutricraft.Model.LogModel;
 import org.nutricraft.Model.UserLevels;
 
-import javax.annotation.Resource;
+
+import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 @WebService(endpointInterface = "org.nutricraft.Services.LevelUserServices")
-public class LevelUserServicesImpl implements LevelUserServices {
+public class LevelUserServicesImpl extends Services implements LevelUserServices {
 
-    @Resource
-    private WebServiceContext wsContext;
-    @Override
+    @WebMethod
     public List<UserLevels> getAllLevel() {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
@@ -45,7 +39,7 @@ public class LevelUserServicesImpl implements LevelUserServices {
         return user;
     }
 
-    @Override
+    @WebMethod
     public Integer getExp(int id) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
@@ -68,7 +62,7 @@ public class LevelUserServicesImpl implements LevelUserServices {
         return exp;
     }
 
-    @Override
+    @WebMethod
     public String addExp(int id, int exp) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
@@ -88,7 +82,7 @@ public class LevelUserServicesImpl implements LevelUserServices {
         return "Failed to add exp";
     }
 
-    @Override
+    @WebMethod
     public String substractExp(int id, int exp) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
@@ -108,7 +102,7 @@ public class LevelUserServicesImpl implements LevelUserServices {
         return "Failed to subsctract exp";
     }
 
-    @Override
+    @WebMethod
     public String deleteExp(int id) {
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
@@ -128,33 +122,5 @@ public class LevelUserServicesImpl implements LevelUserServices {
         return "Failed to delete userlevels";
     }
 
-    public Boolean validateApiKey() {
-        MessageContext messageContext = wsContext.getMessageContext();
-        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
-        System.out.println("messageContext: " + queryString);
-        String[] keyValue = queryString.split("=");
-        if(keyValue.length==0 || !keyValue[0].equals("APIkey")){
-            return false;
-        }
-        String apiKey = keyValue[1];
-        System.out.println("API KEY: " + apiKey);
-        if(apiKey.equals("lalala")||apiKey.equals("hahaha")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    public void log(String description) {
-        MessageContext messageContext = wsContext.getMessageContext();
-        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
-        System.out.println("messageContext: " + queryString);
-        String[] keyValue = queryString.split("=");
-        String apiKey = keyValue[1];
-        System.out.println("API KEY: " + apiKey);
-        String ip = "123";
-        String endpoint = (String) messageContext.get("javax.xml.ws.service.endpoint.address");
-        Timestamp timestamp = new Timestamp(new Date().getTime());
-        LogModel logModel = new LogModel();
-        logModel.InsertLog(description, endpoint, ip, timestamp.toString());
-    }
+
 }

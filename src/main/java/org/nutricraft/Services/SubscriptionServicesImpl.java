@@ -1,31 +1,23 @@
 package org.nutricraft.Services;
 
 import org.nutricraft.Database.Database;
-import org.nutricraft.Model.LogModel;
 import org.nutricraft.Model.Subscibers;
 
-import javax.annotation.Resource;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.spi.http.HttpExchange;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java.util.Map;
 
 @WebService (endpointInterface = "org.nutricraft.Services.SubscriptionServices")
-public class SubscriptionServicesImpl implements SubscriptionServices{
+public class SubscriptionServicesImpl extends Services implements SubscriptionServices{
 
-    @Resource
-    private WebServiceContext wsContext;
     @WebMethod
     public String newSubscription(String idCreator, int idSubscriber){
         if(!validateApiKey()){
             System.out.println("API KEY INVALID");
-            return null;
+            return "API KEY INVALID";
         }
         try {
             Database db = new Database();
@@ -38,7 +30,7 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "newSubs";
+        return "Failed to insert new subscription";
     }
     @WebMethod
     public Boolean checkSubscription(String idCreator, int idSubscriber){
@@ -144,53 +136,6 @@ public class SubscriptionServicesImpl implements SubscriptionServices{
         }
         return listSubscribers;
     }
-    public Boolean validateApiKey() {
-        MessageContext messageContext = wsContext.getMessageContext();
-        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
-        System.out.println("messageContext: " + queryString);
-        String[] keyValue = queryString.split("=");
-        if(keyValue.length==0 || !keyValue[0].equals("APIkey")){
-            return false;
-        }
-        String apiKey = keyValue[1];
-        System.out.println("API KEY: " + apiKey);
-        if(apiKey.equals("lalala")||apiKey.equals("hahaha")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-//
-    public void log(String description) {
-        MessageContext messageContext = wsContext.getMessageContext();
-        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
-        System.out.println("messageContext: " + queryString);
-        String[] keyValue = queryString.split("=");
-        String apiKey = keyValue[1];
-        System.out.println("API KEY: " + apiKey);
-        String ip = "123";
-        String endpoint = (String) messageContext.get("javax.xml.ws.service.endpoint.address");
-        Timestamp timestamp = new Timestamp(new Date().getTime());
-        LogModel logModel = new LogModel();
-        logModel.InsertLog(description, endpoint, ip, timestamp.toString());
-    }
+
 }
 
-// Database db = new Database();
-// Connection connection = db.getConn();
-// try{
-//     Statement statement = connection.createStatement();
-//     String query = "SELECT * FROM logging";
-//     ResultSet result = statement.executeQuery(query);
-//     while (result.next()) {
-//         int id = result.getInt("id");
-//         String desc = result.getString("description");
-//         String ip = result.getString("ip");
-//         String endpoint = result.getString("endpoint");
-//         String date = result.getString("date");
-
-//         System.out.println("id: " + id+ " desc: " + desc + " ip: " + ip + " endpoint: " + endpoint + " date: " + date);
-//     }
-// }catch (Exception e){
-//     e.printStackTrace();
-// }

@@ -27,4 +27,16 @@ public class Database {
         return connection;
     }
 
+    public void InsertLog(String desc, String endpoint, String ip, String requested_at) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String query = "INSERT INTO logging (description, endpoint, IP, requested_at) VALUES ('" + desc + "', '" + endpoint + "', '" + ip + "','" + requested_at +"')";
+            statement.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert log");
+        }
+        System.out.println("Successfully inserted log");
+    }
+
 }

@@ -2,26 +2,18 @@ package org.nutricraft.Services;
 
 import org.nutricraft.Database.Database;
 import org.nutricraft.Model.Coins;
-import org.nutricraft.Model.LogModel;
 
-import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @WebService(endpointInterface = "org.nutricraft.Services.CoinServices")
-public class CoinServicesImpl implements CoinServices{
+public class CoinServicesImpl extends Services implements CoinServices{
 
-    @Resource
-    private WebServiceContext wsContext;
     @WebMethod
     public List<Coins> getAllCoins() {
         if(!validateApiKey()){
@@ -131,35 +123,6 @@ public class CoinServicesImpl implements CoinServices{
             e.printStackTrace();
         }
         return "Failed to delete coins";
-    }
-    public Boolean validateApiKey() {
-        MessageContext messageContext = wsContext.getMessageContext();
-        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
-        System.out.println("messageContext: " + queryString);
-        String[] keyValue = queryString.split("=");
-        if(keyValue.length==0 || !keyValue[0].equals("APIkey")){
-            return false;
-        }
-        String apiKey = keyValue[1];
-        System.out.println("API KEY: " + apiKey);
-        if(apiKey.equals("lalala")||apiKey.equals("hahaha")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    public void log(String description) {
-        MessageContext messageContext = wsContext.getMessageContext();
-        String queryString = (String) messageContext.get("javax.xml.ws.http.request.querystring");
-        System.out.println("messageContext: " + queryString);
-        String[] keyValue = queryString.split("=");
-        String apiKey = keyValue[1];
-        System.out.println("API KEY: " + apiKey);
-        String ip = "123";
-        String endpoint = (String) messageContext.get("javax.xml.ws.service.endpoint.address");
-        Timestamp timestamp = new Timestamp(new Date().getTime());
-        LogModel logModel = new LogModel();
-        logModel.InsertLog(description, endpoint, ip, timestamp.toString());
     }
 
 }

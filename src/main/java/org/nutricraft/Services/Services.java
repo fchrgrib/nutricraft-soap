@@ -21,11 +21,9 @@ public class Services {
         }
         String apiKey = keyValue[1];
         System.out.println("API KEY: " + apiKey);
-        if(apiKey.equals("lalala")||apiKey.equals("hahaha")){
-            return true;
-        }else{
-            return false;
-        }
+        String rest = System.getenv("SOAP_KEY_REST");
+        String app = System.getenv("SOAP_KEY_APP");
+        return apiKey.equals(rest) || apiKey.equals(app);
     }
     //
     protected void log(String description) {

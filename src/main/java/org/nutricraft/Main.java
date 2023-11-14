@@ -16,6 +16,7 @@ public class Main {
             Endpoint.publish("http://nutricraft-soap:8081/ws/userLevels", new LevelUserServicesImpl());
             Endpoint.publish("http://nutricraft-soap:8081/ws/creatorLevels", new LevelCreatorServicesImpl());
             Endpoint.publish("http://nutricraft-soap:8081/ws/coins", new CoinServicesImpl());
+            System.out.println("Server is ready...");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Something went wrong....");

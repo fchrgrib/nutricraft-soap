@@ -13,9 +13,7 @@ public class Database {
             String url = System.getenv("DATABASE_URL");
             String username = System.getenv("DB_USER");
             String password = System.getenv("DB_PASSWORD");
-            System.out.println("url: " + url);
             this.connection = DriverManager.getConnection(url, username, password);
-
             System.out.println("Connected to database");
         }catch (Exception e){
             e.printStackTrace();
@@ -27,10 +25,10 @@ public class Database {
         return connection;
     }
 
-    public void InsertLog(String desc, String endpoint, String ip, String requested_at) {
+    public void InsertLog(String desc, String endpoint, String ip, String requested, String requested_at) {
         try {
             Statement statement = this.connection.createStatement();
-            String query = "INSERT INTO logging (description, endpoint, IP, requested_at) VALUES ('" + desc + "', '" + endpoint + "', '" + ip + "','" + requested_at +"')";
+            String query = "INSERT INTO logging (description, endpoint, IP, request, requested_at) VALUES ('" + desc + "', '" + endpoint + "', '" + ip + "','"+ requested+ "','" + requested_at +"')";
             statement.executeUpdate(query);
         } catch (Exception e) {
             e.printStackTrace();

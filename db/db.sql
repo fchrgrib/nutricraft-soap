@@ -84,9 +84,7 @@ CREATE TABLE `logging`
     description VARCHAR(255) NOT NULL,
     IP VARCHAR(16) NOT NULL,
     endpoint VARCHAR(255) NOT NULL,
+    request VARCHAR(255) NOT NULL,
     requested_at TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
-
-INSERT INTO `logging` (`id`, `description`, `ip`, `endpoint`, `requested_at`) VALUES
-  (1, 'coba log', '127.0.0.1', 'localhost.com', '2008-01-01 00:00:01');

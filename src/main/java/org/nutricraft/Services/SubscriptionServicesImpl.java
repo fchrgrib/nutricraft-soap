@@ -137,5 +137,25 @@ public class SubscriptionServicesImpl extends Services implements SubscriptionSe
         return listSubscribers;
     }
 
+    @WebMethod
+    public String unsubscribe(String idCreator, int idSubscriber ){
+        if(!validateApiKey()){
+            System.out.println("API KEY INVALID");
+            return null;
+        }
+        try {
+            Database db = new Database();
+            Connection connection = db.getConn();
+            Statement statement = connection.createStatement();
+            String query = "DELETE FROM subscribers WHERE id_creator = '" + idCreator + "' AND id_user = '" + idSubscriber + "'";
+            statement.executeUpdate(query);
+            log("Unsubscribe");
+            return "Successfully unsubscribe";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Failed to unsubscribe";
+    }
+
 }
 

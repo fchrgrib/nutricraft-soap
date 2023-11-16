@@ -23,4 +23,7 @@ public interface SubscriptionServices {
 
     @WebMethod
     public List<Subscibers> getAllSubscription();
+
+    @WebMethod
+    public String unsubscribe(String idCreator, int idSubscriber);
 }

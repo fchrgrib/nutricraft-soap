@@ -49,16 +49,16 @@ CREATE TABLE `subscribers` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 INSERT INTO `subscribers` VALUES
-    (1,3,'4169868951'),
-    (2,1,'6621876564'),
-    (3,3,'0068131062'),
-    (4,3,'2534892940'),
-    (5,4,'2542003092'),
-    (6,2,'2076048790'),
-    (7,4,'7833528552'),
-    (8,2,'5858179630'),
-    (9,2,'7807240504'),
-    (10,2,'7589780480');
+    (1,3,'edac9fad-c77f-4761-a647-34e35e881ca3'),
+    (2,1,'edac9fad-c77f-4761-a647-34e35e881ca3'),
+    (3,3,'edac9fad-c77f-4761-a647-34e35e881ca3'),
+    (4,3,'edac9fad-c77f-4761-a647-34e35e881ca3'),
+    (5,4,'edac9fad-c77f-4761-a647-34e35e881ca3'),
+    (6,2,'edac9fad-c77f-4761-a647-34e35e881ca3'),
+    (7,4,'901e9489-8417-4cdf-9e7c-b0313f57662e'),
+    (8,2,'901e9489-8417-4cdf-9e7c-b0313f57662e'),
+    (9,2,'901e9489-8417-4cdf-9e7c-b0313f57662e'),
+    (10,2,'901e9489-8417-4cdf-9e7c-b0313f57662e');
 
 
 DROP TABLE IF EXISTS `userlevels`;
@@ -71,8 +71,8 @@ CREATE TABLE `userlevels` (
 INSERT INTO `userlevels` (`id`, `exp`) VALUES
     (2,100),
     (3,7594),
-    (4,32894),
-    (1,72);
+    (4,3294),
+    (1,472);
 
 
 

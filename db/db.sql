@@ -27,16 +27,7 @@ CREATE TABLE `creatorlevels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 INSERT INTO `creatorlevels`(`id`, `exp`) VALUES
-    ('4169868951', 103),
-      ('6621876564', 3459),
-      ('0068131062', 325),
-      ('2534892940', 645),
-      ('2542003092', 745),
-      ('2076048790', 8567),
-      ('7833528552', 7456),
-      ('5858179630', 25456),
-      ('7807240504', 6734),
-      ('7589780480', 1);
+    ('edac9fad-c77f-4761-a647-34e35e881ca3', 234);
 
 
 
@@ -69,9 +60,6 @@ CREATE TABLE `userlevels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 INSERT INTO `userlevels` (`id`, `exp`) VALUES
-    (2,100),
-    (3,7594),
-    (4,3294),
     (1,472);
 
 

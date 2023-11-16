@@ -73,7 +73,7 @@ public class CoinServicesImpl extends Services implements CoinServices{
             Database db = new Database();
             Connection connection = db.getConn();
             Statement statement = connection.createStatement();
-            String query = "SELECT coin FROM coins JOIN subscribers ON coins.id = subscribers.id_creator WHERE coins.id = '" + id + "'";
+            String query = "SELECT coin FROM coins  WHERE id = '" + id + "'";
             ResultSet result = statement.executeQuery(query);
             if(result.next()){
                 coin = result.getInt("coin");

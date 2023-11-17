@@ -1,6 +1,6 @@
 # Nutricraft SOAP Service
 
-Service yang digunakan oleh .
+Service yang digunakan oleh aplikasi Nutricraft sebagai backend dengan menggunakan protokol SOAP
 
 ## Skema Basis Data
 
@@ -9,13 +9,15 @@ Service yang digunakan oleh .
 
 ## Endpoints
 
-`http://nutricraft-soap:8081/ws/subscription`
+`/ws/subscription`
 
-`http://nutricraft-soap:8081/ws/coins`
+`/ws/coins`
 
-`http://nutricraft-soap:8081/ws/userLevels`
+`/ws/userLevels`
 
-`http://nutricraft-soap:8081/ws/creatorLevels`
+`/ws/creatorLevels`
+
+`/ws/emails`
 
 <!-- AUTHOR -->
 ## Authors
@@ -27,6 +29,15 @@ Service yang digunakan oleh .
 | 13521031 |    Fahrian Afdholi     |
 
 ## Task Distribution
+|   Task               |        NIM         |
+|:--------------------:|:--------------:    |
+| SubscriptionServices | 13521011           |  
+| LevelUserServices    | 13521011           |
+| LevelCreatorServices | 13521011           |
+| CoinServices         | 13521011, 13521031 |
+| EmailServices        | 13521011           |
+
+
 
 <br>
 

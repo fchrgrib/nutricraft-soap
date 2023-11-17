@@ -1,10 +1,8 @@
 package org.nutricraft;
 
 
-import org.nutricraft.Services.CoinServicesImpl;
-import org.nutricraft.Services.LevelCreatorServicesImpl;
-import org.nutricraft.Services.LevelUserServicesImpl;
-import org.nutricraft.Services.SubscriptionServicesImpl;
+import org.nutricraft.Services.*;
+
 import javax.xml.ws.Endpoint;
 
 
@@ -16,6 +14,7 @@ public class Main {
             Endpoint.publish("http://nutricraft-soap:8081/ws/userLevels", new LevelUserServicesImpl());
             Endpoint.publish("http://nutricraft-soap:8081/ws/creatorLevels", new LevelCreatorServicesImpl());
             Endpoint.publish("http://nutricraft-soap:8081/ws/coins", new CoinServicesImpl());
+            Endpoint.publish("http://nutricraft-soap:8081/ws/emails", new EmailServicesImpl());
             System.out.println("Server is ready...");
         } catch (Exception e) {
             e.printStackTrace();
